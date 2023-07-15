@@ -1,4 +1,4 @@
-import { GuildMember, Message } from 'discord.js';
+import { GuildMember, Message, TextChannel, User } from 'discord.js';
 
 import QueueItem from '~/queue/QueueItem';
 import localize from '~/util/i18n/localize';
@@ -10,14 +10,19 @@ export class SoundCommand extends QueueCommand {
   public readonly triggers = [];
 
   public run(message: Message) {
-    let user: GuildMember | null | undefined = message.member;
-
-    console.info(message.webhookId);
     if (message.webhookId) {
-      const botName = message.guild?.members.cache.get(message.webhookId)?.displayName;
-      if (!botName) return;
-      user = message.guild?.members.cache.get(botName);
+      message.client.fetchWebhook(message.webhookId).then(hook => {
+        const hookName = hook.name;
+        const user = (message.channel as TextChannel).members.get(hookName);
+        this.runSound(message, user);
+      });
+      return;
     }
+    if (!message.member) return;
+    this.runSound(message, message.member);
+  }
+
+  private runSound(message: Message, user: GuildMember | undefined) {
     if (!user) return;
 
     const sound = message.content;
