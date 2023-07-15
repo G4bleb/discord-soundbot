@@ -27,7 +27,6 @@ export default class MessageHandler {
 
   private isValidMessage(message: Message) {
     return (
-      !message.author.bot &&
       !message.isDirectMessage() &&
       message.hasPrefix(config.prefix) &&
       !ignoreList.exists(message.author.id)
