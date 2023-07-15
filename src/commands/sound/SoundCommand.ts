@@ -1,4 +1,4 @@
-import { GuildMember, Message, TextChannel, User } from 'discord.js';
+import { GuildMember, Message, TextChannel } from 'discord.js';
 
 import QueueItem from '~/queue/QueueItem';
 import localize from '~/util/i18n/localize';
