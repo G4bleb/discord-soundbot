@@ -11,6 +11,8 @@ export class SoundCommand extends QueueCommand {
 
   public run(message: Message) {
     let user: GuildMember | null | undefined = message.member;
+
+    console.info(message.webhookId);
     if (message.webhookId) {
       const botName = message.guild?.members.cache.get(message.webhookId)?.displayName;
       if (!botName) return;
